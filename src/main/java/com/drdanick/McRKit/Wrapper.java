@@ -947,16 +947,16 @@ public class Wrapper
 
     public boolean performAction(ToolkitAction toolkitaction, String s) {
         {
-            switch (toolkitaction.ordinal()) {
-                case 1:
+            switch (toolkitaction) {
+                case ENABLE:
                     this.restarting = true;
                     System.out.println("Enabled restarts...");
                     return true;
-                case 2:
+                case DISABLE:
                     this.restarting = false;
                     System.out.println("Disabled restarts...");
                     return true;
-                case 3:
+                case RESTART:
                     if (this.pauseMode) {
                         this.pauseMode = false;
                         return true;
@@ -982,7 +982,7 @@ public class Wrapper
                     } catch (Exception localException1) {
                     }
                     return true;
-                case 4:
+                case FORCERESTART:
                     if (!this.serverRunning) {
                         return true;
                     }
@@ -994,7 +994,7 @@ public class Wrapper
                     } catch (Exception localException2) {
                     }
                     return true;
-                case 5:
+                case STOPWRAPPER:
                     try {
                         this.restarting = false;
                         System.out.println("Stopping the wrapper...");
@@ -1017,7 +1017,7 @@ public class Wrapper
                     } catch (Exception localException3) {
                     }
                     return true;
-                case 6:
+                case FORCESTOP:
                     try {
                         this.restarting = false;
                         System.out.println("Forcing stop...");
@@ -1026,7 +1026,7 @@ public class Wrapper
                     } catch (Exception localException4) {
                     }
                     return true;
-                case 7:
+                case HOLD:
                     try {
                         System.out.println("Stopping and holding the server...");
                         this.pauseMode = true;
@@ -1050,10 +1050,10 @@ public class Wrapper
                     } catch (Exception localException5) {
                     }
                     return true;
-                case 8:
+                case UNHOLD:
                     this.pauseMode = false;
                     return true;
-                case 9:
+                case RESCHEDULE:
                     s = s.replaceAll("-", ":");
                     return rescheduleRestart(s);
             }
