@@ -1,1 +1,1 @@
-decompilation of mcremotetoolkit + buggfixes + 1.8 compatible
+decompilation of drdanicks mcremotetoolkit + buggfixes + 1.8 compatible + new key strokes
