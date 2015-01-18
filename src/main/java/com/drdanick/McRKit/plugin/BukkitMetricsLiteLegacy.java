@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
  import org.bukkit.configuration.InvalidConfigurationException;
  import org.bukkit.configuration.file.YamlConfiguration;
  import org.bukkit.configuration.file.YamlConfigurationOptions;
+import org.bukkit.entity.Player;
  import org.bukkit.plugin.Plugin;
  import org.bukkit.plugin.PluginDescriptionFile;
  import org.bukkit.scheduler.BukkitScheduler;
@@ -246,10 +247,14 @@ import java.util.LinkedHashSet;
     {
         PluginDescriptionFile plugindescriptionfile = plugin.getDescription();
         StringBuilder stringbuilder = new StringBuilder();
+        Player[] players = WPlayerInterface.getOnlinePlayersOld();
+        int i = 0;
+        if(players!=null)
+           i=players.length;
         stringbuilder.append(encode("guid")).append('=').append(encode(guid));
         encodeDataPair(stringbuilder, "version", plugindescriptionfile.getVersion());
         encodeDataPair(stringbuilder, "server", Bukkit.getVersion());
-        encodeDataPair(stringbuilder, "players", Integer.toString(WPlayerInterface.getOnlinePlayersOld().length));
+        encodeDataPair(stringbuilder, "players", Integer.toString(i));
         encodeDataPair(stringbuilder, "revision", String.valueOf(5));
         if(flag)
             encodeDataPair(stringbuilder, "ping", "true");

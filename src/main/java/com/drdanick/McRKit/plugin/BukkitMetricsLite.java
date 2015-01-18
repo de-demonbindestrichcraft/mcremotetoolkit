@@ -19,6 +19,7 @@ import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.player.WPlayerInterface;
  import org.bukkit.configuration.InvalidConfigurationException;
  import org.bukkit.configuration.file.YamlConfiguration;
  import org.bukkit.configuration.file.YamlConfigurationOptions;
+import org.bukkit.entity.Player;
  import org.bukkit.plugin.Plugin;
  import org.bukkit.plugin.PluginDescriptionFile;
  import org.bukkit.scheduler.BukkitScheduler;
@@ -182,13 +183,16 @@ import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.player.WPlayerInterface;
      private void postPlugin(boolean paramBoolean)
              throws IOException  {
          PluginDescriptionFile localPluginDescriptionFile = this.plugin.getDescription();
+         Player[] players = WPlayerInterface.getOnlinePlayersOld();
          String str1 = "RemoteToolkit";
          boolean bool = Bukkit.getServer().getOnlineMode();
          String str2 = localPluginDescriptionFile.getVersion();
          String str3 = Bukkit.getVersion();
-         int i = WPlayerInterface.getOnlinePlayersOld().length;
-        
-        
+         int i = 0;
+        if(players!=null)
+        {
+            i=players.length;
+        }
         
         
          StringBuilder localStringBuilder = new StringBuilder();

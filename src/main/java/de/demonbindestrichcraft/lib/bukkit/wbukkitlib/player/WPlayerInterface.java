@@ -23,108 +23,122 @@ import org.bukkit.plugin.Plugin;
  * @author ABC
  */
 public class WPlayerInterface {
+
     private static ConcurrentConfig configPNAME_UUID = new ConcurrentConfig(new File("WBukkitLibPNAME_UUID"));
     private static ConcurrentConfig configUUID_PNAME = new ConcurrentConfig(new File("WBukkitLibUUID_PNAME"));
     private static SqlInterface sqlInterfacePNAME_UUID = configPNAME_UUID.getNewSqlInterface();
     private static SqlInterface sqlInterfaceUUID_PNAME = configUUID_PNAME.getNewSqlInterface();
-       
-    public static Plugin getThisPlugin(CommandSender commandServer)
-    {
+
+    public static Plugin getThisPlugin(CommandSender commandServer) {
         Plugin[] plugins = commandServer.getServer().getPluginManager().getPlugins();
         return plugins[0];
     }
-    
-     public static Player[] getOnlinePlayersOld() {
+
+    public static Player[] getOnlinePlayersOld() {
         Server server = Bukkit.getServer();
-        Collection<? extends Player> onlinePlayers = server.getOnlinePlayers();
-        int length = onlinePlayers.size();
-        Player[] players = new Player[length];
-        Iterator iterator = onlinePlayers.iterator();
-        for (int i = 0; iterator.hasNext(); i++) {
-                if(!(players[i] instanceof Player))
-                {
-                    players[i] = null;
-                    continue;
+        Object obj = server.getOnlinePlayers();
+        try {
+            if ((obj instanceof Collection)) {
+                Collection<? extends Player> onlinePlayers = (Collection<? extends Player>) obj;
+                int length = onlinePlayers.size();
+                Player[] players = new Player[length];
+                Iterator iterator = onlinePlayers.iterator();
+                for (int i = 0; iterator.hasNext(); i++) {
+                    if (!(players[i] instanceof Player)) {
+                        players[i] = null;
+                        continue;
+                    }
+                    players[i] = (Player) iterator.next();
                 }
-                players[i]=(Player) iterator.next();
+                return players;
+            } else if (obj instanceof Player[]) {
+                return (Player[]) obj;
+            }
+        } catch (Throwable ex) {
+            return null;
         }
-        return players;
+        return null;
     }
-     
+
     public static Player[] getOnlinePlayers() {
         Player[] players = getOnlinePlayersOld();
+        if(players==null)
+            return null;
         int length = players.length;
         Player[] onlinePlayersPPP = new PPPlayer[length];
         for (int i = 0; i < length; i++) {
-                onlinePlayersPPP[i]=getPPPlayer(players[i]);
+            onlinePlayersPPP[i] = getPPPlayer(players[i]);
         }
         return onlinePlayersPPP;
     }
 
     public static Player getOnlinePlayerOld(String name) {
         Player[] players = WPlayerInterface.getOnlinePlayers();
+        if(players==null)
+            return null;
         int length = players.length;
-        for(int i = 0; i < length; i++ )
-        {
-            if(!(players[i] instanceof Player))
+        for (int i = 0; i < length; i++) {
+            if (!(players[i] instanceof Player)) {
                 continue;
-            if(players[i].getName().startsWith(name.toLowerCase()))
-            {
+            }
+            if (players[i].getName().startsWith(name.toLowerCase())) {
                 return players[i];
             }
         }
         return null;
-       
+
     }
-    
+
     public static Player getOnlinePlayer(Plugin plugin, String name) {
         Player player = getOnlinePlayerOld(name);
+        if(player==null)
+            return null;
         return getPPPlayer(player);
     }
-    
+
     public static Player getOnlinePlayer(String name) {
         Player player = getPlayerFromName(name);
+        if(player==null)
+            return null;
         return getPPPlayer(player);
     }
 
     public static Player getOnlinePlayerExactOld(Plugin plugin, String name) {
         Player[] players = WPlayerInterface.getOnlinePlayers();
+        if(players==null)
+            return null;
         int length = players.length;
-        for(int i = 0; i < length; i++ )
-        {
-            if(!(players[i] instanceof Player))
-            {
+        for (int i = 0; i < length; i++) {
+            if (!(players[i] instanceof Player)) {
                 continue;
             }
-            if(players[i].getName().equals(name))
-            {
+            if (players[i].getName().equals(name)) {
                 return players[i];
             }
         }
         return null;
     }
-    
+
     public static Player getOnlinePlayerExact(Plugin plugin, String name) {
         Player player = getOnlinePlayerExactOld(null, name);
         return getPPPlayer(player);
     }
-    
-    public static Player getPlayerOld(Player player)
-    {
-        if(!(player instanceof Player))
+
+    public static Player getPlayerOld(Player player) {
+        if (!(player instanceof Player)) {
             throw new NullPointerException("player is not Instance of Player!");
+        }
         return player;
     }
-    
-    public static Player getPPPlayer(Player player)
-    {
-        if(!(player instanceof Player))
+
+    public static Player getPPPlayer(Player player) {
+        if (!(player instanceof Player)) {
             return null;
+        }
         return new PPPlayer(player);
     }
-    
-    public static Player getPlayer(Player player)
-    {
+
+    public static Player getPlayer(Player player) {
         return getPPPlayer(player);
     }
 
@@ -138,33 +152,26 @@ public class WPlayerInterface {
         }
         return server;
     }
-    
-   
-    public static Player getPlayerFromName(String name)
-    {
+
+    public static Player getPlayerFromName(String name) {
         try {
             Map<String, String> copyOfPropertiesPNAME_UUID = configPNAME_UUID.getCopiedOfProperties();
             Map<String, String> copyOfPropertiesUUID_PNAME = configUUID_PNAME.getCopiedOfProperties();
             UUID playerUUID = UUIDFetcher.getUUIDOf(name);
             String theUUID = playerUUID.toString();
-            if(!copyOfPropertiesPNAME_UUID.containsKey(name) && !copyOfPropertiesUUID_PNAME.containsKey(theUUID))
-            {
+            if (!copyOfPropertiesPNAME_UUID.containsKey(name) && !copyOfPropertiesUUID_PNAME.containsKey(theUUID)) {
                 return setPlayerFromName(copyOfPropertiesPNAME_UUID, copyOfPropertiesUUID_PNAME, name, playerUUID);
-            } else if(!copyOfPropertiesPNAME_UUID.containsKey(name))
-            {
-                
+            } else if (!copyOfPropertiesPNAME_UUID.containsKey(name)) {
+
                 return setPlayerFromName(copyOfPropertiesPNAME_UUID, name, playerUUID);
-            } else if(!copyOfPropertiesUUID_PNAME.containsKey(theUUID))
-            {
+            } else if (!copyOfPropertiesUUID_PNAME.containsKey(theUUID)) {
                 return setPlayerFromName(copyOfPropertiesUUID_PNAME, playerUUID, name);
             } else {
                 String string = configPNAME_UUID.getString(name);
-                if(!string.equals(theUUID))
-                {
+                if (!string.equals(theUUID)) {
                     String nName = configUUID_PNAME.getString(theUUID);
-                    if(nName.equals(name))
-                    {
-                        nName = "FakE"+nName;
+                    if (nName.equals(name)) {
+                        nName = "FakE" + nName;
                         return setPlayerFromName(copyOfPropertiesPNAME_UUID, copyOfPropertiesUUID_PNAME, nName, playerUUID);
                     }
                 }
@@ -174,26 +181,26 @@ public class WPlayerInterface {
             return null;
         }
     }
-    
-    public static String getPlayerName(String name)
-    {
+
+    public static String getPlayerName(String name) {
         try {
             Player player = getPlayerFromName(name);
-            if(!(player instanceof Player))
+            if (!(player instanceof Player)) {
                 return "";
+            }
             String theUUID = player.getUniqueId().toString();
             return configUUID_PNAME.getString(theUUID);
         } catch (Exception ex) {
             return "";
         }
     }
-     
-    private static Player setPlayerFromName(Map<String,String> copyOfPropertiesPNAME_UUID, Map<String,String> copyOfPropertiesUUID_PNAME, String name, UUID playerUUID)
-    {
+
+    private static Player setPlayerFromName(Map<String, String> copyOfPropertiesPNAME_UUID, Map<String, String> copyOfPropertiesUUID_PNAME, String name, UUID playerUUID) {
         try {
             Player player = Bukkit.getPlayer(playerUUID);
-            if(!(player instanceof Player))
+            if (!(player instanceof Player)) {
                 return null;
+            }
             String uuid = playerUUID.toString();
             copyOfPropertiesPNAME_UUID.put(name, uuid);
             copyOfPropertiesUUID_PNAME.put(uuid, name);
@@ -206,13 +213,13 @@ public class WPlayerInterface {
             return null;
         }
     }
-    
-    private static Player setPlayerFromName(Map<String,String> copyOfPropertiesPNAME_UUID, String name, UUID playerUUID)
-    {
+
+    private static Player setPlayerFromName(Map<String, String> copyOfPropertiesPNAME_UUID, String name, UUID playerUUID) {
         try {
             Player player = Bukkit.getPlayer(playerUUID);
-            if(!(player instanceof Player))
+            if (!(player instanceof Player)) {
                 return null;
+            }
             String uuid = playerUUID.toString();
             copyOfPropertiesPNAME_UUID.put(name, uuid);
             configPNAME_UUID.update(copyOfPropertiesPNAME_UUID);
@@ -222,14 +229,14 @@ public class WPlayerInterface {
             return null;
         }
     }
-    
-    private static Player setPlayerFromName(Map<String,String> copyOfPropertiesUUID_PNAME, UUID playerUUID, String name)
-    {
+
+    private static Player setPlayerFromName(Map<String, String> copyOfPropertiesUUID_PNAME, UUID playerUUID, String name) {
         try {
             String uuid = playerUUID.toString();
             Player player = Bukkit.getPlayer(playerUUID);
-            if(!(player instanceof Player))
+            if (!(player instanceof Player)) {
                 return null;
+            }
             copyOfPropertiesUUID_PNAME.put(uuid, name);
             configUUID_PNAME.saveToDb(sqlInterfaceUUID_PNAME, "WBukkitLibUUID_PNAME", "UUID", "PNAME");
             return player;
@@ -237,14 +244,12 @@ public class WPlayerInterface {
             return null;
         }
     }
-    
-     public static boolean isPlayerNameInWbukkitLibPNAME_UUIDList(String name)
-    {
+
+    public static boolean isPlayerNameInWbukkitLibPNAME_UUIDList(String name) {
         return configPNAME_UUID.getCopiedOfProperties().containsKey(name);
     }
-    
-    public static boolean isPlayerUUIDInWbukkitLibUUID_PNAMEList(String uuid)
-    {
+
+    public static boolean isPlayerUUIDInWbukkitLibUUID_PNAMEList(String uuid) {
         return configUUID_PNAME.getCopiedOfProperties().containsKey(uuid);
     }
 }

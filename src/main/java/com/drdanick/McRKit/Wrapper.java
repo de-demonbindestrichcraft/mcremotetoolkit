@@ -677,8 +677,8 @@ public class Wrapper
                                         try {
                                             if (i != 13 && i != 10) {
                                                 s = (new StringBuilder()).append(s).append((char) i).toString();
-                                                myReader.getOutput().append(s);
-                                                myReader.flush();
+                                                //myReader.getOutput().append(s);
+                                                //myReader.flush();
                                             } else {
                                                 s = s.trim();
                                                 if (!s.startsWith(".") || !parseConsoleInput(s.substring(1))) {

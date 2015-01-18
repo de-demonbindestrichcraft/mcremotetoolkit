@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="0.01" errors="0" skipped="0" tests="1" name="net.diamondmine.minecraftremotetoolkit.AppTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\bin"/>
+    <property name="java.vm.version" value="23.6-b04"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit"/>
+    <property name="java.runtime.version" value="1.7.0_10-b18"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="basedir" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\endorsed"/>
+    <property name="os.arch" value="x86"/>
+    <property name="surefire.real.class.path" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter7192623141021970192.jar"/>
+    <property name="java.io.tmpdir" value="C:\Users\ABC\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Qt\4.8.6\bin;C:\unrar\bin;C:\mingw32\bin;C:\Program Files (x86)\AMD APP\bin\x86_64;C:\Program Files (x86)\AMD APP\bin\x86;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;c:\Android-SDK-Windows\sdk\platform-tools\;C:\Program Files\Calibre2\;C:\Python27\;C:\Program Files (x86)\Git\cmd;C:\Program Files\Samsung\AllShare Framework DMS\1.3.23\;C:\Program Files\Samsung\AllShare Framework DMS\1.3.23\64bit\;C:\Program Files (x86)\ANX.Framework\Tools\;C:\Program Files (x86)\sbt\\bin;C:\Windows\Microsoft.NET\Framework\v4.0.30319;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files (x86)\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files (x86)\Microsoft Visual Studio\Common\Tools;C:\Program Files (x86)\Microsoft Visual Studio\VC98\bin;."/>
+    <property name="surefire.test.class.path" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\test-classes;C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\classes;C:\Users\ABC\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\ABC\.m2\repository\org\bukkit\bukkit\1.8.1\bukkit-1.8.1.jar;C:\Users\ABC\.m2\repository\org\craftbukkit\craftbukkit\1.8.1\craftbukkit-1.8.1.jar;C:\Users\ABC\.m2\repository\net\milkbowl\Vault\1.8.1\Vault-1.8.1.jar;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="51.0"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\ABC"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.7"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="ABC"/>
+    <property name="java.class.path" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\test-classes;C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\classes;C:\Users\ABC\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\ABC\.m2\repository\org\bukkit\bukkit\1.8.1\bukkit-1.8.1.jar;C:\Users\ABC\.m2\repository\org\craftbukkit\craftbukkit\1.8.1\craftbukkit-1.8.1.jar;C:\Users\ABC\.m2\repository\net\milkbowl\Vault\1.8.1\Vault-1.8.1.jar;"/>
+    <property name="java.vm.specification.version" value="1.7"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre"/>
+    <property name="sun.java.command" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter7192623141021970192.jar C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire4656075892171890168tmp C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire7797067482555286233tmp"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="de"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="1.7.0_10"/>
+    <property name="java.ext.dirs" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\resources.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\rt.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\sunrsasign.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\jsse.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\jce.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\charsets.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\jfr.jar;C:\Program Files (x86)\Java\jdk1.7.0_10\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="localRepository" value="C:\Users\ABC\.m2\repository"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="0.001" classname="net.diamondmine.minecraftremotetoolkit.AppTest" name="testApp"/>
+</testsuite>

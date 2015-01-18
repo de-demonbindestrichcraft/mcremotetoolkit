@@ -58,13 +58,15 @@ public class RTKEventHandler
                 if(s1 == null)
                     s1 = "Everyone is being kicked ;)";
                 Player aplayer[] = WPlayerInterface.getOnlinePlayersOld();
-                int i = aplayer.length;
+                int i = 0;
+                if(aplayer!=null)
+                    i = aplayer.length;
                 for(int i1 = 0; i1 < i; i1++)
                 {
                     Player player4 = aplayer[i1];
                     player4.kickPlayer(s1);
                 }
-
+                commandsender.sendMessage(s1);
                 return true;
             }
             if(command.getName().equals("kickallhold"))
@@ -81,7 +83,7 @@ public class RTKEventHandler
                     Player player5 = aplayer1[j1];
                     player5.kickPlayer(s2);
                 }
-
+                commandsender.sendMessage(s2);
                 return true;
             }
             if(command.getName().equals("kickallstop"))
@@ -98,7 +100,7 @@ public class RTKEventHandler
                     Player player6 = aplayer2[k1];
                     player6.kickPlayer(s3);
                 }
-
+                commandsender.sendMessage(s3);
                 return true;
             }
             if(command.getName().equals("RTPING"))

@@ -25,7 +25,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
@@ -63,13 +62,13 @@ import org.bukkit.util.Vector;
  */
 public class PPlayer implements Player {
 
-    private CraftPlayer cPlayer;
+    private Player cPlayer;
     public PPlayer(Player player)
     {
        try {
-        cPlayer = (CraftPlayer)player.getPlayer();
+        cPlayer = player.getPlayer();
         } catch (ClassCastException ex) {
-            player.sendMessage("Argument of PPlayer Konstrukter is not a instance of CraftPlayer!");
+            player.sendMessage("Argument of PPlayer Konstrukter is not a instance of Player!");
         }
     }
     
