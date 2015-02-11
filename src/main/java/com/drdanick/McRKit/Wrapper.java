@@ -4,27 +4,25 @@
 // Source File Name:   Wrapper.java
 package com.drdanick.McRKit;
 
-import com.drdanick.McRKit.ToolkitAction;
 import com.drdanick.McRKit.auth.UserManager;
 import com.drdanick.McRKit.module.Module;
 import com.drdanick.McRKit.module.ModuleManager;
-import com.drdanick.McRKit.module.ModuleMetadata;
+import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.files.UTF8ToCP850Converter;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import jline.Terminal;
 import jline.console.ConsoleReader;
-import jline.internal.NonBlockingInputStream;
+import jnr.ffi.LibraryLoader;
+import jnr.ffi.Pointer;
 import net.wimpi.telnetd.BootException;
 import net.wimpi.telnetd.TelnetD;
-import net.wimpi.telnetd.net.PortListener;
 
 // Referenced classes of package com.drdanick.McRKit:
 //            Scheduler, WrapperException, ScheduledTask, LoggerOutputStream, 
@@ -85,6 +83,8 @@ public class Wrapper
     private String stopCommand = "stop";
     private boolean vanillaServer = false;
     private boolean serverTypeKnown = false;
+    private InputStreamReader inputStreamReader;
+    private boolean isUtf8Supported;
 
     private Wrapper() {
         restarting = true;
@@ -121,6 +121,7 @@ public class Wrapper
         vanillaServer = false;
         serverTypeKnown = false;
         myReader = null;
+        inputStreamReader = null;
     }
 
     private Wrapper(String as[], PropertiesFile propertiesfile, Map map, boolean flag) {
@@ -159,6 +160,7 @@ public class Wrapper
         vanillaServer = false;
         serverTypeKnown = false;
         startHeld = flag;
+        inputStreamReader = null;
         System.out.println((new StringBuilder()).append("Wrapper is running on: ").append(System.getProperty("os.name")).append(" ").append(System.getProperty("os.version")).append(" ").append(System.getProperty("os.arch")).toString());
         if (System.getProperty("os.name").trim().equals("Windows XP")) {
             System.out.println("NOTE: Windows XP is not fully supported.\nTry pressing enter a few times...");
@@ -297,7 +299,10 @@ public class Wrapper
         }
         if (toolkitProperties.getString("enable-jline").toLowerCase().trim().equals("true") && reader == null) {
             try {
+                //new FileOutputStream(FileDescriptor.out);
                 //reader = new ConsoleReader(System.in, new FileOutputStream(FileDescriptor.out));
+                inputStreamReader=UTF8ToCP850Converter.getInner(true);
+                isUtf8Supported = Charset.isSupported("UTF-8");
                 reader = new ConsoleReader(System.in, System.out);
                 reader.getTerminal().setEchoEnabled(true);
                 reader.setEchoCharacter(null);
@@ -311,8 +316,13 @@ public class Wrapper
                 } else {
                     ansiMode = true;
                 }
-                System.setOut(new PrintStream(new LoggerOutputStream(logger, Level.INFO, System.out, reader), true));
-                System.setErr(new PrintStream(new LoggerOutputStream(logger, Level.SEVERE, System.err, reader), true));
+                if (isUtf8Supported) {
+                    System.setOut(new PrintStream(new LoggerOutputStream(logger, Level.INFO, System.out, reader), true, "UTF-8"));
+                    System.setErr(new PrintStream(new LoggerOutputStream(logger, Level.SEVERE, System.err, reader), true, "UTF-8"));
+                } else {
+                    System.setOut(new PrintStream(new LoggerOutputStream(logger, Level.INFO, System.out, reader), true));
+                    System.setErr(new PrintStream(new LoggerOutputStream(logger, Level.SEVERE, System.err, reader), true));
+                }
             } catch (IOException ioexception) {
                 System.err.println((new StringBuilder()).append("Error: Could not open console input stream: ").append(ioexception.getMessage()).toString());
             }
@@ -386,7 +396,7 @@ public class Wrapper
                     shutdownHook = new Thread(new Runnable() {
 
                         public void run() {
-                            mcProcess.destroy();
+                            killProcess(mcProcess);
                             if (reader != null) {
                                 reader.getTerminal().setEchoEnabled(true);
                             }
@@ -398,7 +408,7 @@ public class Wrapper
                         public void run() {
                             BufferedReader bufferedreader = null;
                             try {
-                                PrintStream printstream = System.out;
+                                PrintStream printstream = UTF8ToCP850Converter.getOuter(true);
                                 bufferedreader = new BufferedReader(new InputStreamReader(mcProcess.getInputStream()), 1024);
                                 int i = 0;
                                 StringBuilder stringbuilder = new StringBuilder(100);
@@ -673,12 +683,13 @@ public class Wrapper
                                 int i = -1;
 
                                 try {
-                                    while ((i = System.in.read()) >= 0) {
+                                    while ((i = inputStreamReader.read()) >= 0) {
                                         try {
                                             if (i != 13 && i != 10) {
                                                 s = (new StringBuilder()).append(s).append((char) i).toString();
                                                 //myReader.getOutput().append(s);
                                                 //myReader.flush();
+                                                i = -1;
                                             } else {
                                                 s = s.trim();
                                                 if (!s.startsWith(".") || !parseConsoleInput(s.substring(1))) {
@@ -800,9 +811,16 @@ public class Wrapper
                 System.out.println("Severe error in Minecraft Remote Toolkit wrapper!");
                 McRKitLauncher.sendStackTrace(ioexception, "WR:");
                 ioexception.printStackTrace();
+                killProcess(mcProcess);
                 System.exit(0);
             } catch (InterruptedException interruptedexception) {
                 System.out.println("Non-severe Thread error in wrapper, but unexpected behavior may result.");
+            } catch (Throwable ex) {
+                System.out.println("Other server error in Minecraft Remote Toolkit wrapper!");
+                McRKitLauncher.sendStackTrace(ex, "OWR:");
+                ex.printStackTrace();
+                killProcess(mcProcess);
+                System.exit(0);
             }
         } while (restarting);
         serverRunning = false;
@@ -1330,6 +1348,57 @@ public class Wrapper
             throws Exception {
         int i = getUnixPID(process);
         return Runtime.getRuntime().exec((new StringBuilder()).append("kill -9 ").append(i).toString()).waitFor();
+    }
+
+    public static interface Kernel32 {
+
+        boolean TerminateProcess(Pointer handle, int exitCode);
+    }
+
+    public static interface Posix {
+
+        int kill(int pid, int sig);
+    }
+
+    public static void killProcess(Process p) {
+        try {
+            Thread.sleep(3000);
+            p.destroy();
+            if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
+                if (p.getClass().getName().equals("java.lang.Win32Process")
+                        || p.getClass().getName().equals("java.lang.ProcessImpl")) {
+                    Field f = p.getClass().getDeclaredField("handle");
+                    f.setAccessible(true);
+                    long handle = f.getLong(p);
+
+                    System.out.println("Killing process");
+                    Pointer ptr = Pointer.wrap(jnr.ffi.Runtime.getSystemRuntime(), handle);
+                    int exitCode = 0;
+                    Kernel32 kernel32 = LibraryLoader.create(Kernel32.class).load("Kernel32");
+                    kernel32.TerminateProcess(ptr, exitCode);
+                }
+            } else {
+                if (p.getClass().getName().equals("java.lang.UNIXProcess")) {
+                    Field f = p.getClass().getDeclaredField("pid");
+                    f.setAccessible(true);
+                    int pid = f.getInt(p);
+
+                    System.out.println("Killing process");
+                    Posix posix = LibraryLoader.create(Posix.class).load("c");
+                    posix.kill(pid, 9);
+                }
+            }
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(Wrapper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Wrapper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(Wrapper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(Wrapper.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Wrapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void writeStringToConsole(String s)
