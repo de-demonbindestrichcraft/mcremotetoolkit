@@ -6,7 +6,6 @@ package de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.files;
 
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,46 +90,90 @@ public class UTF8ToCP850Converter {
     }
 
     public static PrintStream getOuter(boolean useDefault) {
+        boolean supported;
         try {
-            boolean supported = Charset.isSupported("Cp850");
-            if (supported) {
-                return new PrintStream(System.out, true, "Cp850");
+            if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
+                supported = Charset.isSupported("Cp850");
+                if (supported) {
+                    return new PrintStream(System.out, true, "Cp850");
+                }
+                supported = Charset.isSupported("UTF-8");
+                if (supported) {
+                    return new PrintStream(System.out, true, "UTF-8");
+                }
+                supported = Charset.isSupported("ISO-8859-1");
+                if (supported) {
+                    return new PrintStream(System.out, true, "ISO-8859-1");
+                }
+                if (!useDefault) {
+                    return new PrintStream(System.out, true, Charset.defaultCharset().name());
+                } else {
+                    return System.out;
+                }
+            } else {
+                supported = Charset.isSupported("UTF-8");
+                if (supported) {
+                    return new PrintStream(System.out, true, "UTF-8");
+                }
+                supported = Charset.isSupported("ISO-8859-1");
+                if (supported) {
+                    return new PrintStream(System.out, true, "ISO-8859-1");
+                }
+                supported = Charset.isSupported("Cp850");
+                if (supported) {
+                    return new PrintStream(System.out, true, "Cp850");
+                }
+                if (!useDefault) {
+                    return new PrintStream(System.out, true, Charset.defaultCharset().name());
+                } else {
+                    return System.out;
+                }
             }
-            supported = Charset.isSupported("UTF-8");
-            if( supported) {
-                return new PrintStream(System.out, true, "UTF-8");
-            }
-            supported = Charset.isSupported("ISO-8859-1");
-            if ( supported ) {
-                return new PrintStream(System.out, true, "ISO-8859-1");
-            }
-            if(!useDefault)
-                return new PrintStream(System.out, true, Charset.defaultCharset().name());
-            else
-                return System.out;
         } catch (Throwable ex) {
             return null;
         }
     }
-    
-     public static InputStreamReader getInner(boolean useDefault) {
+
+    public static InputStreamReader getInner(boolean useDefault) {
+        boolean supported;
         try {
-            boolean supported = Charset.isSupported("Cp850");
-            if (supported) {
-                return new InputStreamReader(System.in, "Cp850");
+            if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
+                supported = Charset.isSupported("Cp850");
+                if (supported) {
+                    return new InputStreamReader(System.in, "Cp850");
+                }
+                supported = Charset.isSupported("UTF-8");
+                if (supported) {
+                    return new InputStreamReader(System.in, "UTF-8");
+                }
+                supported = Charset.isSupported("ISO-8859-1");
+                if (supported) {
+                    return new InputStreamReader(System.in, "ISO-8859-1");
+                }
+                if (!useDefault) {
+                    return new InputStreamReader(System.in, Charset.defaultCharset().name());
+                } else {
+                    return new InputStreamReader(System.in);
+                }
+            } else {
+                supported = Charset.isSupported("UTF-8");
+                if (supported) {
+                    return new InputStreamReader(System.in, "UTF-8");
+                }
+                supported = Charset.isSupported("ISO-8859-1");
+                if (supported) {
+                    return new InputStreamReader(System.in, "ISO-8859-1");
+                }
+                supported = Charset.isSupported("Cp850");
+                if (supported) {
+                    return new InputStreamReader(System.in, "Cp850");
+                }
+                if (!useDefault) {
+                    return new InputStreamReader(System.in, Charset.defaultCharset().name());
+                } else {
+                    return new InputStreamReader(System.in);
+                }
             }
-            supported = Charset.isSupported("UTF-8");
-            if( supported) {
-                return new InputStreamReader(System.in, "UTF-8");
-            }
-            supported = Charset.isSupported("ISO-8859-1");
-            if ( supported ) {
-                return new InputStreamReader(System.in, "ISO-8859-1");
-            }
-            if(!useDefault)
-                return new InputStreamReader(System.in, Charset.defaultCharset().name());
-            else
-                return new InputStreamReader(System.in);
         } catch (Throwable ex) {
             return null;
         }
