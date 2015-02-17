@@ -42,13 +42,15 @@ public class WPlayerInterface {
                 Collection<? extends Player> onlinePlayers = (Collection<? extends Player>) obj;
                 int length = onlinePlayers.size();
                 Player[] players = new Player[length];
+                Player player=null;
                 Iterator iterator = onlinePlayers.iterator();
                 for (int i = 0; iterator.hasNext(); i++) {
-                    if (!(players[i] instanceof Player)) {
+                    player=(Player) iterator.next();
+                    if (!(player instanceof Player)) {
                         players[i] = null;
                         continue;
                     }
-                    players[i] = (Player) iterator.next();
+                    players[i] = player;
                 }
                 return players;
             } else if (obj instanceof Player[]) {
@@ -73,7 +75,7 @@ public class WPlayerInterface {
     }
 
     public static Player getOnlinePlayerOld(String name) {
-        Player[] players = WPlayerInterface.getOnlinePlayers();
+        Player[] players = WPlayerInterface.getOnlinePlayersOld();
         if(players==null)
             return null;
         int length = players.length;
@@ -81,7 +83,7 @@ public class WPlayerInterface {
             if (!(players[i] instanceof Player)) {
                 continue;
             }
-            if (players[i].getName().startsWith(name.toLowerCase())) {
+            if (players[i].getName().equals(name) || players[i].getName().equalsIgnoreCase(name) || players[i].getName().toLowerCase().startsWith(name.toLowerCase())) {
                 return players[i];
             }
         }
