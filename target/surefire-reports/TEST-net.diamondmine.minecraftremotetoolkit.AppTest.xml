@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.038" errors="0" skipped="0" tests="1" name="net.diamondmine.minecraftremotetoolkit.AppTest">
+<testsuite failures="0" time="0.014" errors="0" skipped="0" tests="1" name="net.diamondmine.minecraftremotetoolkit.AppTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\bin"/>
@@ -20,7 +20,7 @@
     <property name="basedir" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit"/>
     <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre\lib\endorsed"/>
     <property name="os.arch" value="x86"/>
-    <property name="surefire.real.class.path" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter5376624006848163543.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter4509846825495474479.jar"/>
     <property name="java.io.tmpdir" value="C:\Users\ABC\AppData\Local\Temp\"/>
     <property name="line.separator" value="
 "/>
@@ -44,7 +44,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="C:\Program Files (x86)\Java\jdk1.7.0_10\jre"/>
-    <property name="sun.java.command" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter5376624006848163543.jar C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire8260113346998365101tmp C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire8909234246625268276tmp"/>
+    <property name="sun.java.command" value="C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefirebooter4509846825495474479.jar C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire2545081967707462681tmp C:\Users\ABC\Documents\NetBeansProjects\MinecraftRemoteToolkit\target\surefire\surefire8948084666278524853tmp"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="de"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -61,5 +61,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.004" classname="net.diamondmine.minecraftremotetoolkit.AppTest" name="testApp"/>
+  <testcase time="0.002" classname="net.diamondmine.minecraftremotetoolkit.AppTest" name="testApp"/>
 </testsuite>

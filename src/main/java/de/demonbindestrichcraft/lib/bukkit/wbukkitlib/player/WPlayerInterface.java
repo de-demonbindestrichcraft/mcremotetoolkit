@@ -8,6 +8,7 @@ import com.evilmidget38.UUIDFetcher;
 import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.files.ConcurrentConfig;
 import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.sql.SqlInterface;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -42,10 +43,10 @@ public class WPlayerInterface {
                 Collection<? extends Player> onlinePlayers = (Collection<? extends Player>) obj;
                 int length = onlinePlayers.size();
                 Player[] players = new Player[length];
-                Player player=null;
+                Player player = null;
                 Iterator iterator = onlinePlayers.iterator();
                 for (int i = 0; iterator.hasNext(); i++) {
-                    player=(Player) iterator.next();
+                    player = (Player) iterator.next();
                     if (!(player instanceof Player)) {
                         players[i] = null;
                         continue;
@@ -64,8 +65,9 @@ public class WPlayerInterface {
 
     public static Player[] getOnlinePlayers() {
         Player[] players = getOnlinePlayersOld();
-        if(players==null)
+        if (players == null) {
             return null;
+        }
         int length = players.length;
         Player[] onlinePlayersPPP = new PPPlayer[length];
         for (int i = 0; i < length; i++) {
@@ -76,8 +78,17 @@ public class WPlayerInterface {
 
     public static Player getOnlinePlayerOld(String name) {
         Player[] players = WPlayerInterface.getOnlinePlayersOld();
-        if(players==null)
-            return null;
+        if (players == null) {
+            try {
+                Player player = Bukkit.getServer().getPlayer(name);
+                if (player == null) {
+                    return null;
+                }
+                return player;
+            } catch (Throwable ex) {
+                return null;
+            }
+        }
         int length = players.length;
         for (int i = 0; i < length; i++) {
             if (!(players[i] instanceof Player)) {
@@ -87,28 +98,39 @@ public class WPlayerInterface {
                 return players[i];
             }
         }
-        return null;
+        try {
+            Player player = Bukkit.getServer().getPlayer(name);
+            if (player == null) {
+                return null;
+            }
+            return player;
+        } catch (Throwable ex) {
+            return null;
+        }
 
     }
 
     public static Player getOnlinePlayer(Plugin plugin, String name) {
         Player player = getOnlinePlayerOld(name);
-        if(player==null)
+        if (player == null) {
             return null;
+        }
         return getPPPlayer(player);
     }
 
     public static Player getOnlinePlayer(String name) {
         Player player = getPlayerFromName(name);
-        if(player==null)
+        if (player == null) {
             return null;
+        }
         return getPPPlayer(player);
     }
 
     public static Player getOnlinePlayerExactOld(Plugin plugin, String name) {
         Player[] players = WPlayerInterface.getOnlinePlayers();
-        if(players==null)
+        if (players == null) {
             return null;
+        }
         int length = players.length;
         for (int i = 0; i < length; i++) {
             if (!(players[i] instanceof Player)) {
