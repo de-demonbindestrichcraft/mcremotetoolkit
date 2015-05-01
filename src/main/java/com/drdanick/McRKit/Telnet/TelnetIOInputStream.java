@@ -2,7 +2,6 @@ package com.drdanick.McRKit.Telnet;
 
 import com.drdanick.McRKit.*;
 
-import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.files.ThreadSafeTelnet;
 import java.awt.Font;
 import java.awt.Panel;
 import java.io.IOException;

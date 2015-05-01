@@ -5,7 +5,6 @@
 package com.drdanick.McRKit.Telnet;
 
 import com.drdanick.McRKit.*;
-import de.demonbindestrichcraft.lib.bukkit.wbukkitlib.common.files.ThreadSafeTelnet;
 import java.io.*;
 import java.util.Iterator;
 import java.util.List;
